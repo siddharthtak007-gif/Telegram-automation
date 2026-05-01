@@ -1,0 +1,271 @@
+{
+  "name": "price leptop",
+  "nodes": [
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "models/gemini-3-flash-preview"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Tell me best laptops under 99k. Find exactly 10 laptops. Return the output STRICTLY as a raw JSON array of objects. Each object must have these exact keys: \"Name\", \"Price\", \"Offers\", and \"Best_Buy_Price\"."
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "85c5f13e-b4bb-47e7-8171-6603e8d27470",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "83IuOHke99ZuqQ2y",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1Bev19W5H293RzoJgX_xEV5DJbizp4KLIa0GxM5dYIZs",
+          "mode": "list",
+          "cachedResultName": "99k leptop price",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Bev19W5H293RzoJgX_xEV5DJbizp4KLIa0GxM5dYIZs/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1658516668,
+          "mode": "list",
+          "cachedResultName": "name",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Bev19W5H293RzoJgX_xEV5DJbizp4KLIa0GxM5dYIZs/edit#gid=1658516668"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Price": "={{ $json.Price }}",
+            "Offers": "={{ $json.Offers }}",
+            "Best_Buy_Price": "={{ $json.Best_Buy_Price }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "spreadsheetId",
+              "displayName": "spreadsheetId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "properties",
+              "displayName": "properties",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "sheets",
+              "displayName": "sheets",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "spreadsheetUrl",
+              "displayName": "spreadsheetUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Price",
+              "displayName": "Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Offers",
+              "displayName": "Offers",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Best_Buy_Price",
+              "displayName": "Best_Buy_Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        880,
+        -32
+      ],
+      "id": "8a34b134-d272-41d8-b61f-b70f3ebbae11",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "vGDJvVvuqtmC6iki",
+          "name": "Google Sheets OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "a45a757b-68b0-4e8a-b4bc-0bcc8ad9844a",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "chatId": "5465112575",
+        "text": "={{ $json.Name }}{{ $json.Price }}{{ $json.Offers }}{{ $json.Best_Buy_Price }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1296,
+        16
+      ],
+      "id": "be58c5ed-4814-4be0-8140-11d2d95c46a6",
+      "name": "Send a text message",
+      "webhookId": "30e46819-8470-4213-bf0f-70a07e09c989",
+      "credentials": {
+        "telegramApi": {
+          "id": "XRc7aRQyhwJcstG3",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const rawData = $input.first().json.content.parts[0].text;\nreturn JSON.parse(rawData);\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        144
+      ],
+      "id": "73f2202c-d3c6-4b6f-9c3c-b2af6409f2cc",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "312eecf8-e071-4881-8461-69cc2b2c88fb",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "4e0a102403b75c500652ff05e2b71bd6a0c5875584495bf0fb7c8ce452313e8e"
+  },
+  "id": "lhhfDCj8lEP8E3jT",
+  "tags": []
+}
